@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Console;
 using System.IO;
 using Serilog;
 
@@ -15,36 +16,33 @@ namespace Lab4
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; private set; }
-
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            Configuration = new ConfigurationBuilder()
-                    .SetBasePath(env.ContentRootPath)
-                    .AddJsonFile("appsettings.json")
-                    .Build();
-
-            var logFile = Path.Combine(env.ContentRootPath, "logfile.txt");
+            Configuration = configuration;
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(logFile)
+                .WriteTo.File("logfile.txt")
                 .CreateLogger();
         }
+
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(logBuilder =>
+            {
+                logBuilder.AddFilter<ConsoleLoggerProvider>((category, level) =>
+                    category == typeof(Startup).FullName
+                );
+                logBuilder.AddSerilog();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> startupLogger)
         {
-            loggerFactory.AddConsole();
-            loggerFactory.AddSerilog();
-
-            var startupLogger = loggerFactory.CreateLogger<Startup>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,11 +50,10 @@ namespace Lab4
 
             app.Run(async (context) =>
             {
-                //await context.Response.WriteAsync($"Hello World! {env.EnvironmentName}");
-                await context.Response.WriteAsync($"{Configuration["message"]}");
+                await context.Response.WriteAsync("Hello World!");
             });
-            startupLogger.LogInformation("Application startup complete!");
 
+            startupLogger.LogInformation("Application startup complete!");
             startupLogger.LogCritical("This is a critical message");
             startupLogger.LogDebug("This is a debug message");
             startupLogger.LogTrace("This is a trace message");
