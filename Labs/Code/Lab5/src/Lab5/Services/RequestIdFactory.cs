@@ -1,13 +1,16 @@
 ﻿using System.Threading;
 
-public interface IRequestIdFactory
+namespace Lab5.Services
 {
-    string MakeRequestId();
-}
+    public interface IRequestIdFactory
+    {
+        string MakeRequestId();
+    }
 
-public class RequestIdFactory : IRequestIdFactory
-{
-    private int _requestId;
+    public class RequestIdFactory : IRequestIdFactory
+    {
+        private int _requestId;
 
-    public string MakeRequestId() => Interlocked.Increment(ref _requestId).ToString();
+        public string MakeRequestId() => Interlocked.Increment(ref _requestId).ToString();
+    }
 }
