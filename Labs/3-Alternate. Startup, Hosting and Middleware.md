@@ -1,0 +1,177 @@
+# ASP.NET Core Startup, Hosting, and Middleware
+This fork of lab 3 material is meant to be used in engagements with customers 
+who begin with a Web API project (lab 8) instead of with an MVC project.
+
+## Create a new ASP.NET Core application
+
+1. Open the lab 8 (or 8.5) project we've been working with
+
+## Running the application under IIS
+
+1. The application should be setup to run under IIS Express by default.
+1. Look at *launchSettings.json* and notice that the app can run either with 
+or without IIS. Make sure the launchUrl for both profiles is set to 'swagger'.
+1. Run the application and observe the Swagger UI that is shown.
+
+## Running the application on Kestrel directly
+
+1. Change the Debug drop down in the toolbar to the application name as shown 
+below.
+
+  ![image](Images/run-with-kestrel.png)
+
+1. Run the application and navigate to the root. It should show the same 
+Swagger UI.
+1. Change the port to `8081` by adding a call to `UseUrls` in the 
+`Program.cs`:
+
+   ```
+    public static IWebHost BuildWebHost(string[] args) =>
+        WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .UseUrls("http://localhost:8081")
+            .Build();
+    }
+   ```
+1. Navigate to the project properties (by right clicking on the project, and 
+selecting `Properties`)
+1. Go to the `Debug` tab and change `App URL` to `http://localhost:8081`
+
+   ![image](Images/run-with-kestrel.png)
+
+1. Run the application and navigate to the root. It should show the web API 
+ running on port 8081.
+
+> **Note:** If the page does not load correctly, verify that the console 
+application host is running and refresh the browser.
+
+## Serving static files
+
+1. Go to `Startup.cs` in the `Configure` method and add `UseStaticFiles` before the hello world middleware:
+
+  ```cs
+  public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+  {
+    if (env.IsDevelopment())
+    {
+      app.UseDeveloperExceptionPage();
+    }
+
+    app.UseStaticFiles();
+
+    app.Run(async (context) =>
+    {
+      await context.Response.WriteAsync("Hello World!");
+    });
+  }
+```
+
+1. Create a file called `index.html` with the following contents in the `wwwroot` folder:
+
+  ```html
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8" />
+      <title></title>
+  </head>
+  <body>
+      <h1>Hello from ASP.NET Core!</h1>
+  </body>
+  </html>
+  ```
+
+1. Run the application and navigate to the root. It should show the hello world middleware.
+1. Navigate to `index.html` and it should show the static page in `wwwroot`.
+
+## Adding default document support
+
+1. Change the static files middleware in `Startup.cs` from `app.UseStaticFiles()` to `app.UseFileServer()`.
+1. Run the application. The default page `index.html` should show when navigating to the root of the site.
+
+## Changing environments
+
+The default environment in Visual Studio is development. In the property pages you can see this specified in the environment variables section:
+
+  ![image](https://cloud.githubusercontent.com/assets/95136/15806164/a57a79a2-2b3d-11e6-9551-9e106036e0c0.png)
+
+1. Add some code to the `Configure` method in `Startup.cs` to print out the environment name. Make sure you comment out the UseFileServer middleware. Otherwise you'll still get the same default static page.
+
+  ```cs
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        //app.UseFileServer();
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync($"Hello World! {env.EnvironmentName}");
+        });
+    }
+```
+2. Run the application and it should print out `Hello World! Development`.
+1. Change the application to run in the `Production` environment by changing the `ASPNETCORE_ENVIRONMENT` environment variable on the `Debug` property page:
+
+  ![image](https://cloud.githubusercontent.com/assets/95136/15806196/9b52efee-2b3e-11e6-851b-35765d5b2a4d.png)
+
+1. Run the application and it should print out `Hello World! Production`.
+
+## Setup the configuration system
+
+1. Add a `Configuration` property to `Startup.cs` of type `IConfiguration`
+
+```cs
+using Microsoft.Extensions.Configuration;
+
+public class Startup
+{
+...
+    public IConfiguration Configuration { get; }
+...
+```
+
+2. Also in `Startup.cs`, add a constructor that sets the property:
+
+  ```cs
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+  ```
+
+3. Create a file in the root of the project called `appsettings.json` (Add / New Item / ASP.NET Configuration File) with the following content:
+
+    ```JSON
+    {
+        "message": "Hello from configuration"
+    }
+    ```
+
+4. In `Startup.cs` modify the `Configure` method to print out the configuration key in the http response:
+
+```cs
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        //app.UseFileServer();
+
+        app.Run(async (context) =>
+        {
+            await context.Response.WriteAsync($"{Configuration["message"]}");
+        });
+    }
+```
+
+5. Run the application and it should print out `Hello from configuration`.
+
+## Extra
+- Replace the JSON configuration provider with the XML configuration provider
+- Write a custom configuration provider
