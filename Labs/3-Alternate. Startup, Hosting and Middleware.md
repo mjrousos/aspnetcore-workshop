@@ -1,6 +1,7 @@
 # ASP.NET Core Startup, Hosting, and Middleware
-This fork of lab 3 material is meant to be used in engagements with customers 
-who begin with a Web API project (lab 8) instead of with an MVC project.
+This picks up where lab 2 left off and dives into more detail
+on the core components of an ASP.NET Core web app (hosting,
+startup, and request processing middleware).
 
 ## Create a new ASP.NET Core application
 
@@ -50,10 +51,10 @@ application host is running and refresh the browser.
 
 ## Understanding Program.cs
 
-1. In a web browser, navigate to https://github.com/aspnet/MetaPackages and 
-then follow links src -> Microsoft.AspNetCore -> WebHost.cs to view source 
-for the `CreateDefaultBuilder` method (which is used by our *Program.cs*). 
-Notice what this method does.
+1. In ASP.NET Core 2.0, our web host is configured by a call to 
+`WebHost.CreateDefaultBuilder` (source [here](https://github.com/aspnet/MetaPackages/blob/dev/src/Microsoft.AspNetCore/WebHost.cs)
+for the curious). This helper method configures many different pieces of our 
+application's web host automatically.
     1. It specifies Kestrel as the web host
     1. It specifies a content root
     1. It configures application configuration
@@ -134,9 +135,8 @@ can automatically be made available through dependency injection.
     straightforward to create new configuration providers if existing 
     providers don't meet your needs. Look at existing providers (like [the 
     environment variable config provider](https://github.com/aspnet/Configuration/tree/dev/src/Config.EnvironmentVariables)) for examples.
-1. Like configuration, logging setup has been moved from `Startup` to 
-`WebHostBuilder`. Configure basic logging for the application with a call 
-to `ConfigureLogging`.
+1. Configure basic logging for the application with a call to 
+`ConfigureLogging`.
     ```CSharp
     public static IWebHost BuildWebHost(string[] args) =>
         new WebHostBuilder()
@@ -180,7 +180,10 @@ the `Configure` method.
 1. Go to `Startup.cs` in the `Configure` method and add `UseStaticFiles` 
 before the `UseSwagger` call. Each of the `Use` statements in this method 
 registers a piece of middleware which will act (in order) on incoming HTTP 
-requests to produce a response.
+requests to produce a response. The `UseMvc` call registers middleware to 
+route requests to MVC controllers, for example. This new static file 
+middleware will return static files (images, css, js, html, etc.) from the 
+application's web root.
 
     ```cs
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -214,7 +217,9 @@ requests to produce a response.
     </html>
     ```
 
-1. Navigate to `index.html` and it should show the static page in `wwwroot`.
+1. Navigate to `index.html` and it should show the static page in `wwwroot`
+thanks for the static file middleware detecting that a file matching the 
+requested path exists.
 
 ## Changing environments
 
@@ -245,7 +250,7 @@ settings in *appsettings.json*
 
   ![image](https://cloud.githubusercontent.com/assets/95136/15806196/9b52efee-2b3e-11e6-851b-35765d5b2a4d.png)
 
-1. Run the application and it notice that logging is substantially decreased. 
+1. Run the application and notice that logging is substantially decreased. 
     1. And, if you added a different connection string in 
     *appsettings.development.json*, changing the environment to `Production` 
     will cause the app to use the previous database again.
@@ -352,3 +357,7 @@ the settings options
     ```
 1. Launch the application and observe the settings being returned through the 
 new `SettingsController`
+
+## Extra
+- Replace the JSON configuration provider with the XML configuration provider
+- Write a custom configuration provider
