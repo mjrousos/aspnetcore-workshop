@@ -1,21 +1,15 @@
 
 # ASP.NET Core Workshop
+This workshop is meant to guide you through getting start with ASP.NET Core and creating your first WebAPI. It covers a variety of important ASP.NET Core topics, explaining how and why to use the features.
 
 ## Installers
 
-### Windows
-
+- [Visual Studio 2017](https://www.microsoft.com/net/core#windowsvs2017) -  **.NET Desktop**, **.NET Core**, and **Web Development** workloads
 - [.NET Core SDK](https://www.microsoft.com/net/core#windowscmd)
-- [Visual Studio 2017](https://www.microsoft.com/net/core#windowsvs2017) -  **.NET Core** and **Web Development** workloads
-- [Razor Language Services (VSIX)](https://aka.ms/razorlangsvc)
-- [Project File Tools (VSIX)](https://aka.ms/projfiletools)
+- [Docker for Windows](https://docs.docker.com/docker-for-windows/install/) (Requires Windows 10)
 
-### macOS
+## Resources
 
-- [.NET Core SDK](https://www.microsoft.com/net/core#macos)
-- [Visual Studio for Mac](https://www.visualstudio.com/vs/visual-studio-mac/)
-
-### Visual Studio Code
-
-- [Visual Studio Code](http://code.visualstudio.com)
-- [C# Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
+- [ASP.NET Core Documentation](https://docs.microsoft.com/aspnet/core/)
+- [.NET Core Documentation](https://docs.microsoft.com/dotnet/core/)
+- [ASP.NET Core Source](https://github.com/aspnet)
