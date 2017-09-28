@@ -5,7 +5,7 @@
 | ---- | ----- |
 | 9:00 AM - 10:00 AM | Introduction to the .NET Ecosystem and ASP.NET Core |
 | 10:00 AM - 10:30 AM | Lab #1 - Introduction to .NET Core SDK and Create First App |
-| 10:30 PM - 11:30 AM | Lab #2 - MVC Web API |
+| 10:30 PM - 11:30 AM | Lab #2 - ASP.NET Core Web API |
 | 11:30 AM - 12:30 PM | Lab #3 - Entity Framework Core|
 | 12:30 PM - 1:30 PM | Lunch |
 | 1:30 PM - 3:00 PM | Lab #4 - Startup, Hosting and Middleware |
