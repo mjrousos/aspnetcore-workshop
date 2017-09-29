@@ -43,7 +43,7 @@ namespace AspNetCoreWorkshop
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration(SetupAppConfiguration)
                 .ConfigureLogging(SetupAppLogging)
-                .UseUrls("http://localhost:8081")
+                .UseUrls("http://0.0.0.0:8081")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
