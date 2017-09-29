@@ -1,9 +1,6 @@
 ﻿using Lab10.Models;
-using Foo.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Lab10.Data
 {

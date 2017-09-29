@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Lab10.Models;
-using System.Threading.Tasks;
 
-namespace Foo.Models
+namespace Lab10.Models
 {
     public class Product
     {

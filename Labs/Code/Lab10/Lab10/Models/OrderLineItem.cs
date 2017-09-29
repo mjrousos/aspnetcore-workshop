@@ -1,5 +1,4 @@
-﻿using Foo.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Lab10.Models
 {
