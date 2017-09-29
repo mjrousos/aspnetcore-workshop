@@ -20,7 +20,7 @@ namespace Lab3
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:8081")
+                .UseUrls("http://0.0.0.0:8081")
                 .Build();
     }
 }
