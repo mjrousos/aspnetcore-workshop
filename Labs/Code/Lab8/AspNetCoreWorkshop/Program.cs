@@ -9,7 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using AspNetCoreWorkshop.Data;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Logging.Console;
+using Serilog;
 
 namespace AspNetCoreWorkshop
 {
@@ -17,24 +18,35 @@ namespace AspNetCoreWorkshop
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("logfile.txt")
+                .WriteTo.Console()
+                .CreateLogger();
 
-            using (var scope = host.Services.CreateScope())
+            try
             {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<OrdersContext>();
-                    DbInitializer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
-                }
-            }
+                var host = BuildWebHost(args);
 
-            host.Run();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    var context = services.GetService<StoreContext>();
+                    if (context != null)
+                    {
+                        DbInitializer.Initialize(context);
+                    }
+                }
+
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
@@ -42,25 +54,18 @@ namespace AspNetCoreWorkshop
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration(SetupAppConfiguration)
-                .ConfigureLogging(SetupAppLogging)
+                .UseSerilog()
                 .UseUrls("http://0.0.0.0:8081")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 
-        private static void SetupAppLogging(WebHostBuilderContext context, ILoggingBuilder loggingBuilder)
-        {
-            loggingBuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
-            loggingBuilder.AddConsole();
-            loggingBuilder.AddDebug();
-        }
-
         private static void SetupAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configBuilder)
         {
             var env = context.HostingEnvironment;
 
-            configBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            configBuilder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            configBuilder.AddJsonFile("appsettings.json", false, true);
+            configBuilder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
 
             if (env.IsDevelopment())
             {

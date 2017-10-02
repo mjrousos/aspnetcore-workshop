@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AspNetCoreWorkshop.Models;
 using Microsoft.Extensions.Options;
+using AspNetCoreWorkshop.Models;
 
 namespace AspNetCoreWorkshop.Controllers
 {
-    [Route("/api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/Settings")]
     public class SettingsController : Controller
     {
         private StoreSettingsOptions _settings;
@@ -25,8 +27,7 @@ namespace AspNetCoreWorkshop.Controllers
             {
                 Name = _settings.StoreName,
                 ID = _settings.StoreID,
-                Settings = _settings.Settings
-                            .Where(s => s.Value.Enabled)
+                Settings = _settings.Settings.Where(s => s.Value.Enabled)
             });
         }
     }

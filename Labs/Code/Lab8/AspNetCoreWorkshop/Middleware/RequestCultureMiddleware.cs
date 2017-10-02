@@ -17,26 +17,26 @@ namespace AspNetCoreWorkshop.Middleware
         public RequestCultureMiddleware(RequestDelegate next, IOptions<RequestCultureOptions> options)
         {
             _next = next;
-            _options = options?.Value;
+            _options = options.Value;
         }
 
         public Task Invoke(HttpContext context)
         {
-            var cultureQuery = context.Request.Query["culture"];
+            var requestCulture = _options?.DefaultCulture;
 
-            var requestCulture = _options.DefaultCulture;
+            var cultureQuery = context.Request.Query["culture"];
             if (!string.IsNullOrWhiteSpace(cultureQuery))
             {
-                var culture = new CultureInfo(cultureQuery);
-                requestCulture = culture;
+                requestCulture = new CultureInfo(cultureQuery);
             }
-            
+
             if (requestCulture != null)
             {
                 CultureInfo.CurrentCulture = requestCulture;
                 CultureInfo.CurrentUICulture = requestCulture;
             }
 
+            // Call the next delegate/middleware in the pipeline
             return _next(context);
         }
     }

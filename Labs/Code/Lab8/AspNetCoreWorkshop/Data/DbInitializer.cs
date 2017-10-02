@@ -1,5 +1,4 @@
 ﻿using AspNetCoreWorkshop.Models;
-using Foo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace AspNetCoreWorkshop.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(OrdersContext context)
+        public static void Initialize(StoreContext context)
         {
             // Creates the database if it doesn't exist
             context.Database.EnsureCreated();
@@ -17,7 +16,7 @@ namespace AspNetCoreWorkshop.Data
             // Checks to see if any products exist
             if (context.Products.Any())
             {
-                return;   // DB already has been seeded
+                return; // DB already has been seeded
             }
 
             // Initial products
@@ -37,22 +36,22 @@ namespace AspNetCoreWorkshop.Data
             // Initial orders
             var orders = new Order[]
             {
-                new Order{ Description = "First order", DateCreated = DateTime.Now.AddDays(-10), Completed = true },
-                new Order{ Description = "Second order", DateCreated = DateTime.Now }
+                new Order { Description = "First order", DateCreated = DateTime.Now.AddDays(-10), Completed = true },
+                new Order { Description = "Second order", DateCreated = DateTime.Now }
             };
 
             context.Orders.AddRange(orders);
             context.SaveChanges();
 
-            // Initial OrderLinesItems
+            // Initial order line items
             var orderItems = new OrderLineItem[]
             {
-                new OrderLineItem{ Order = orders[0], Product = products[0]},
-                new OrderLineItem{ Order = orders[0], Product = products[3]},
+                new OrderLineItem{ Order = orders[0], Product = products[0], Quantity = 1 },
+                new OrderLineItem{ Order = orders[0], Product = products[3], Quantity = 2 },
 
-                new OrderLineItem{ Order = orders[1], Product = products[1]},
-                new OrderLineItem{ Order = orders[1], Product = products[3]},
-                new OrderLineItem{ Order = orders[1], Product = products[5]},
+                new OrderLineItem{ Order = orders[0], Product = products[1], Quantity = 2 },
+                new OrderLineItem{ Order = orders[1], Product = products[3], Quantity = 1 },
+                new OrderLineItem{ Order = orders[1], Product = products[5], Quantity = 1 }
             };
 
             context.OrderLineItems.AddRange(orderItems);

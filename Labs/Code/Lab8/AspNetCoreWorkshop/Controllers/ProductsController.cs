@@ -1,43 +1,44 @@
-﻿using AspNetCoreWorkshop.Data;
-using AspNetCoreWorkshop.Models;
-using Foo.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreWorkshop.Models;
+using AspNetCoreWorkshop.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreWorkshop.Controllers
 {
-    [Route("/api/[controller]")]
     [Produces("application/json")]
-    public class ProductsController: ControllerBase
+    [Route("/api/[controller]")]
+    public class ProductsController : ControllerBase
     {
-        private OrdersContext _dataContext;
+        private StoreContext _dataContext;
 
-        public ProductsController(OrdersContext context)
+        public ProductsController(StoreContext storeContext)
         {
-            _dataContext = context;
+            _dataContext = storeContext;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Product>> Get() => 
-            await _dataContext.Products.ToListAsync();
+        public async Task<IEnumerable<Product>> Get() => await _dataContext.Products.ToListAsync();
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await _dataContext.Products.SingleOrDefaultAsync(p => p.Id == id);
+            var product = await _dataContext.Products.SingleOrDefaultAsync(x => x.Id == id);
+
             if (product == null)
             {
                 return NotFound();
             }
+
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Product product)
+        public async Task<IActionResult> Post([FromBody]Product product)
         {
             if (!ModelState.IsValid)
             {

@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace aspnetcoreworkshop.Migrations
+namespace AspNetCoreWorkshop.Migrations
 {
-    [DbContext(typeof(OrdersContext))]
-    partial class OrdersContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(StoreContext))]
+    [Migration("20170929204049_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +32,11 @@ namespace aspnetcoreworkshop.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("ProductId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Order");
                 });
@@ -69,14 +74,21 @@ namespace aspnetcoreworkshop.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("AspNetCoreWorkshop.Models.Order", b =>
+                {
+                    b.HasOne("AspNetCoreWorkshop.Models.Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId");
+                });
+
             modelBuilder.Entity("AspNetCoreWorkshop.Models.OrderLineItem", b =>
                 {
                     b.HasOne("AspNetCoreWorkshop.Models.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany("OrderLineItems")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("AspNetCoreWorkshop.Models.Product", "Product")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("ProductId");
                 });
 #pragma warning restore 612, 618

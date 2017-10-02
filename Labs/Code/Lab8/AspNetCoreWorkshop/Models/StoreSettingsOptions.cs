@@ -11,10 +11,4 @@ namespace AspNetCoreWorkshop.Models
         public int StoreID { get; set; }
         public Dictionary<string, StoreSetting> Settings { get; set; }
     }
-
-    public class StoreSetting
-    {
-        public string Value { get; set; }
-        public bool Enabled { get; set; }
-    }
 }

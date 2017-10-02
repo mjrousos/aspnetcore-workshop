@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using AspNetCoreWorkshop.Models;
 using System.Threading.Tasks;
 
-namespace Foo.Models
+namespace AspNetCoreWorkshop.Models
 {
     public class Product
     {
@@ -15,9 +13,8 @@ namespace Foo.Models
         [Required(ErrorMessage = "NameRequired")]
         public string Name { get; set; }
 
-        public ICollection<OrderLineItem> OrderItems { get; set; } = new HashSet<OrderLineItem>();
+        public ICollection<OrderLineItem> OrderLineItems = new HashSet<OrderLineItem>();
 
-        [NotMapped]
-        public IEnumerable<Order> Orders => OrderItems.Select(o => o.Order);
+        public IEnumerable<Order> Orders => OrderLineItems.Select(o => o.Order).Distinct();
     }
 }

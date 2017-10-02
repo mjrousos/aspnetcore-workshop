@@ -1,5 +1,4 @@
-﻿using Foo.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,9 +12,9 @@ namespace AspNetCoreWorkshop.Models
         public string Description { get; set; }
         public DateTime DateCreated { get; set; }
         public bool Completed { get; set; }
-        public ICollection<OrderLineItem> OrderItems { get; set; } = new HashSet<OrderLineItem>();
+        public ICollection<OrderLineItem> OrderLineItems { get; set; } = new HashSet<OrderLineItem>();
 
         [NotMapped]
-        public IEnumerable<Product> Products => OrderItems.Select(o => o.Product);
+        public IEnumerable<Product> Products => OrderLineItems.Select(o => o.Product).Distinct();
     }
 }

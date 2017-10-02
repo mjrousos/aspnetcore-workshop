@@ -15,10 +15,10 @@ namespace AspNetCoreWorkshop.Controllers
     [Route("api/Orders")]
     public class OrdersController : Controller
     {
-        private readonly OrdersContext _context;
+        private readonly StoreContext _context;
         private readonly IStringLocalizer<OrdersController> _localizer;
 
-        public OrdersController(OrdersContext context, IStringLocalizer<OrdersController> localizer)
+        public OrdersController(StoreContext context, IStringLocalizer<OrdersController> localizer)
         {
             _context = context;
             _localizer = localizer;

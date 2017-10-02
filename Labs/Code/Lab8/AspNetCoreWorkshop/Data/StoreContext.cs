@@ -1,5 +1,4 @@
 ﻿using AspNetCoreWorkshop.Models;
-using Foo.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreWorkshop.Data
 {
-    public class OrdersContext : DbContext
+    public class StoreContext: DbContext
     {
-        public OrdersContext(DbContextOptions<OrdersContext> options)
+        public StoreContext(DbContextOptions<StoreContext> options)
             : base(options)
-        { }
+        {
+
+        }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }

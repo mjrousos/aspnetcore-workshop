@@ -14,9 +14,9 @@ namespace AspNetCoreWorkshop.Controllers
     [Route("api/OrderLineItems")]
     public class OrderLineItemsController : Controller
     {
-        private readonly OrdersContext _context;
+        private readonly StoreContext _context;
 
-        public OrderLineItemsController(OrdersContext context)
+        public OrderLineItemsController(StoreContext context)
         {
             _context = context;
         }
