@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AspNetCoreWorkshop.Models;
 using AspNetCoreWorkshop.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace AspNetCoreWorkshop.Controllers
 {
@@ -33,6 +34,8 @@ namespace AspNetCoreWorkshop.Controllers
             {
                 return NotFound();
             }
+
+            Log.Information("GET {Id}: Found {@Product}", id, product);
 
             return Ok(product);
         }

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using AspNetCoreWorkshop.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using AspNetCoreWorkshop.Data;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Serilog;
+using System;
+using System.IO;
 
 namespace AspNetCoreWorkshop
 {
@@ -17,19 +14,35 @@ namespace AspNetCoreWorkshop
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("logfile.txt")
+                .WriteTo.Console()
+                .CreateLogger();
 
-            using (var scope = host.Services.CreateScope())
+            try
             {
-                var services = scope.ServiceProvider;
-                var context = services.GetService<StoreContext>();
-                if (context != null)
-                {
-                    DbInitializer.Initialize(context);
-                }
-            }
+                var host = BuildWebHost(args);
 
-            host.Run();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    var context = services.GetService<StoreContext>();
+                    if (context != null)
+                    {
+                        DbInitializer.Initialize(context);
+                    }
+                }
+
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
@@ -37,23 +50,11 @@ namespace AspNetCoreWorkshop
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration(SetupAppConfiguration)
-                .ConfigureLogging(SetupAppLogging)
+                .UseSerilog()
                 .UseUrls("http://0.0.0.0:8081")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
-
-        private static void SetupAppLogging(WebHostBuilderContext context, ILoggingBuilder loggingBuilder)
-        {
-            loggingBuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
-            loggingBuilder.AddConsole();
-            loggingBuilder.AddDebug();
-
-            loggingBuilder.AddFilter<ConsoleLoggerProvider>((category, logLevel) =>
-            {
-                return category == typeof(Startup).FullName;
-            });
-        }
 
         private static void SetupAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configBuilder)
         {
@@ -71,3 +72,4 @@ namespace AspNetCoreWorkshop
         }
     }
 }
+

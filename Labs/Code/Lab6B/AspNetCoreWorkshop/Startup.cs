@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-using AspNetCoreWorkshop.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreWorkshop.Data;
+using AspNetCoreWorkshop.Middleware;
 using AspNetCoreWorkshop.Models;
 using AspNetCoreWorkshop.Services;
-using AspNetCoreWorkshop.Middleware;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AspNetCoreWorkshop
 {
@@ -50,13 +50,6 @@ namespace AspNetCoreWorkshop
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
-
-            startupLogger.LogInformation("Application startup complete!");
-            startupLogger.LogCritical("This is a critical message");
-            startupLogger.LogDebug("This is a debug message");
-            startupLogger.LogTrace("This is a trace message");
-            startupLogger.LogWarning("This is a warning message");
-            startupLogger.LogError("This is a error message");
         }
     }
 }
