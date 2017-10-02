@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreWorkshop.Models;
 using AspNetCoreWorkshop.Services;
 using AspNetCoreWorkshop.Middleware;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetCoreWorkshop
 {
@@ -35,7 +36,7 @@ namespace AspNetCoreWorkshop
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> startupLogger)
         {
             if (env.IsDevelopment())
             {
@@ -49,6 +50,13 @@ namespace AspNetCoreWorkshop
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
+
+            startupLogger.LogInformation("Application startup complete!");
+            startupLogger.LogCritical("This is a critical message");
+            startupLogger.LogDebug("This is a debug message");
+            startupLogger.LogTrace("This is a trace message");
+            startupLogger.LogWarning("This is a warning message");
+            startupLogger.LogError("This is a error message");
         }
     }
 }

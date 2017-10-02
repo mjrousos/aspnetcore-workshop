@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using AspNetCoreWorkshop.Data;
+using Microsoft.Extensions.Logging.Console;
 
 namespace AspNetCoreWorkshop
 {
@@ -47,6 +48,11 @@ namespace AspNetCoreWorkshop
             loggingBuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
             loggingBuilder.AddConsole();
             loggingBuilder.AddDebug();
+
+            loggingBuilder.AddFilter<ConsoleLoggerProvider>((category, logLevel) =>
+            {
+                return category == typeof(Startup).FullName;
+            });
         }
 
         private static void SetupAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configBuilder)
