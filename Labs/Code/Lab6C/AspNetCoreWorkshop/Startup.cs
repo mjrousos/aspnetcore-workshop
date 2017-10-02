@@ -4,11 +4,13 @@ using AspNetCoreWorkshop.Models;
 using AspNetCoreWorkshop.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace AspNetCoreWorkshop
 {
@@ -42,6 +44,20 @@ namespace AspNetCoreWorkshop
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler(subApp =>
+                {
+                    subApp.Run(async context =>
+                    {
+                        context.Response.ContentType = "text/html";
+                        await context.Response.WriteAsync("<strong> Application error. Please contact support. </strong>");
+                        await context.Response.WriteAsync(new string(' ', 512));  // Padding for IE
+                    });
+                });
+            }
+
+            app.Run(context => throw new InvalidOperationException("Oops!"));
 
             app.UseStaticFiles();
 
