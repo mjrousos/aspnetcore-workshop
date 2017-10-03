@@ -1,0 +1,363 @@
+2017-10-03 00:03:06.750 +00:00 [Warning] Storing keys in a directory '"/root/.aspnet/DataProtection-Keys"' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+2017-10-03 00:03:06.777 +00:00 [Information] User profile is available. Using '"/root/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2017-10-03 00:03:06.788 +00:00 [Information] Creating key {5a5585d6-476f-4558-b489-c1be47b68165} with creation date 2017-10-03 00:03:06Z, activation date 2017-10-03 00:03:06Z, and expiration date 2018-01-01 00:03:06Z.
+2017-10-03 00:03:06.800 +00:00 [Warning] No XML encryptor configured. Key {5a5585d6-476f-4558-b489-c1be47b68165} may be persisted to storage in unencrypted form.
+2017-10-03 00:03:06.803 +00:00 [Information] Writing data to file '"/root/.aspnet/DataProtection-Keys/key-5a5585d6-476f-4558-b489-c1be47b68165.xml"'.
+2017-10-03 00:03:07.006 +00:00 [Information] Application startup complete!
+2017-10-03 00:03:07.269 +00:00 [Information] Entity Framework Core "2.0.0-rtm-26452" initialized '"StoreContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2017-10-03 00:03:07.297 +00:00 [Fatal] Host terminated unexpectedly
+System.PlatformNotSupportedException: LocalDB is not supported on this Platform.
+   at System.Data.SqlClient.SNI.LocalDB.GetLocalDBConnectionString(String localDbInstance)
+   at System.Data.SqlClient.SNI.SNIProxy.GetLocalDBDataSource(String fullServerName, Boolean& error)
+   at System.Data.SqlClient.SNI.SNIProxy.CreateConnectionHandle(Object callbackObject, String fullServerName, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Byte[]& instanceName, Byte[]& spnBuffer, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity)
+   at System.Data.SqlClient.SNI.TdsParserStateObjectManaged.CreatePhysicalSNIHandle(String serverName, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Byte[]& instanceName, Byte[]& spnBuffer, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity)
+   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity, Boolean withFailover)
+   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, Boolean withFailover)
+   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, TimeoutTimer timeout)
+   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean redirectedUserInstance)
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDatabaseCreator.<>c__DisplayClass18_0.<Exists>b__0(DateTime giveUp)
+   at Microsoft.EntityFrameworkCore.ExecutionStrategyExtensions.<>c__DisplayClass12_0`2.<Execute>b__0(DbContext c, TState s)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ExecutionStrategyExtensions.Execute[TState,TResult](IExecutionStrategy strategy, Func`2 operation, Func`2 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.ExecutionStrategyExtensions.Execute[TState,TResult](IExecutionStrategy strategy, TState state, Func`2 operation)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDatabaseCreator.Exists(Boolean retryOnNotExists)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDatabaseCreator.Exists()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator.EnsureCreated()
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.EnsureCreated()
+   at AspNetCoreWorkshop.Data.DbInitializer.Initialize(StoreContext context) in C:\Users\JonJung\Documents\Visual Studio 2017\Projects\Lab9\AspNetCoreWorkshop\Data\DbInitializer.cs:line 14
+   at AspNetCoreWorkshop.Program.Main(String[] args) in C:\Users\JonJung\Documents\Visual Studio 2017\Projects\Lab9\AspNetCoreWorkshop\Program.cs:line 36
+2017-10-03 00:03:34.299 +00:00 [Warning] Storing keys in a directory '"/root/.aspnet/DataProtection-Keys"' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+2017-10-03 00:03:34.326 +00:00 [Information] User profile is available. Using '"/root/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2017-10-03 00:03:34.869 +00:00 [Information] Application startup complete!
+2017-10-03 00:03:35.213 +00:00 [Information] Entity Framework Core "2.0.0-rtm-26452" initialized '"StoreContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2017-10-03 00:03:35.859 +00:00 [Fatal] Host terminated unexpectedly
+System.PlatformNotSupportedException: LocalDB is not supported on this Platform.
+   at System.Data.SqlClient.SNI.LocalDB.GetLocalDBConnectionString(String localDbInstance)
+   at System.Data.SqlClient.SNI.SNIProxy.GetLocalDBDataSource(String fullServerName, Boolean& error)
+   at System.Data.SqlClient.SNI.SNIProxy.CreateConnectionHandle(Object callbackObject, String fullServerName, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Byte[]& instanceName, Byte[]& spnBuffer, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity)
+   at System.Data.SqlClient.SNI.TdsParserStateObjectManaged.CreatePhysicalSNIHandle(String serverName, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Byte[]& instanceName, Byte[]& spnBuffer, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity)
+   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity, Boolean withFailover)
+   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, Boolean withFailover)
+   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, TimeoutTimer timeout)
+   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean redirectedUserInstance)
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDatabaseCreator.<>c__DisplayClass18_0.<Exists>b__0(DateTime giveUp)
+   at Microsoft.EntityFrameworkCore.ExecutionStrategyExtensions.<>c__DisplayClass12_0`2.<Execute>b__0(DbContext c, TState s)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ExecutionStrategyExtensions.Execute[TState,TResult](IExecutionStrategy strategy, Func`2 operation, Func`2 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.ExecutionStrategyExtensions.Execute[TState,TResult](IExecutionStrategy strategy, TState state, Func`2 operation)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDatabaseCreator.Exists(Boolean retryOnNotExists)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDatabaseCreator.Exists()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator.EnsureCreated()
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.EnsureCreated()
+   at AspNetCoreWorkshop.Data.DbInitializer.Initialize(StoreContext context) in C:\Users\JonJung\Documents\Visual Studio 2017\Projects\Lab9\AspNetCoreWorkshop\Data\DbInitializer.cs:line 14
+   at AspNetCoreWorkshop.Program.Main(String[] args) in C:\Users\JonJung\Documents\Visual Studio 2017\Projects\Lab9\AspNetCoreWorkshop\Program.cs:line 36
+2017-10-03 00:04:42.065 +00:00 [Warning] Storing keys in a directory '"/root/.aspnet/DataProtection-Keys"' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+2017-10-03 00:04:42.093 +00:00 [Information] User profile is available. Using '"/root/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2017-10-03 00:04:42.613 +00:00 [Information] Application startup complete!
+2017-10-03 00:04:53.218 +00:00 [Information] Entity Framework Core "2.0.0-rtm-26452" initialized '"StoreContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2017-10-03 00:12:25.530 +00:00 [Warning] Storing keys in a directory '"/root/.aspnet/DataProtection-Keys"' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+2017-10-03 00:12:25.557 +00:00 [Information] User profile is available. Using '"/root/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2017-10-03 00:12:25.783 +00:00 [Information] Application startup complete!
+2017-10-03 00:12:25.986 +00:00 [Information] Entity Framework Core "2.0.0-rtm-26452" initialized '"StoreContext"' using provider '"Microsoft.EntityFrameworkCore.Sqlite"' with options: "None"
+2017-10-03 00:12:26.039 +00:00 [Information] Executed DbCommand ("8"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:26.068 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:26.072 +00:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""CREATE TABLE \"Product\" (
+    \"Id\" INTEGER NOT NULL CONSTRAINT \"PK_Product\" PRIMARY KEY AUTOINCREMENT,
+    \"Name\" TEXT NOT NULL
+);"
+2017-10-03 00:12:26.073 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""CREATE TABLE \"Order\" (
+    \"Id\" INTEGER NOT NULL CONSTRAINT \"PK_Order\" PRIMARY KEY AUTOINCREMENT,
+    \"Completed\" INTEGER NOT NULL,
+    \"DateCreated\" TEXT NOT NULL,
+    \"Description\" TEXT NULL,
+    \"ProductId\" INTEGER NULL,
+    CONSTRAINT \"FK_Order_Product_ProductId\" FOREIGN KEY (\"ProductId\") REFERENCES \"Product\" (\"Id\") ON DELETE RESTRICT
+);"
+2017-10-03 00:12:26.074 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""CREATE TABLE \"OrderLineItem\" (
+    \"Id\" INTEGER NOT NULL CONSTRAINT \"PK_OrderLineItem\" PRIMARY KEY AUTOINCREMENT,
+    \"OrderId\" INTEGER NULL,
+    \"ProductId\" INTEGER NULL,
+    \"Quantity\" INTEGER NOT NULL,
+    CONSTRAINT \"FK_OrderLineItem_Order_OrderId\" FOREIGN KEY (\"OrderId\") REFERENCES \"Order\" (\"Id\") ON DELETE RESTRICT,
+    CONSTRAINT \"FK_OrderLineItem_Product_ProductId\" FOREIGN KEY (\"ProductId\") REFERENCES \"Product\" (\"Id\") ON DELETE RESTRICT
+);"
+2017-10-03 00:12:26.075 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""CREATE INDEX \"IX_Order_ProductId\" ON \"Order\" (\"ProductId\");"
+2017-10-03 00:12:26.075 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""CREATE INDEX \"IX_OrderLineItem_OrderId\" ON \"OrderLineItem\" (\"OrderId\");"
+2017-10-03 00:12:26.075 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""CREATE INDEX \"IX_OrderLineItem_ProductId\" ON \"OrderLineItem\" (\"ProductId\");"
+2017-10-03 00:12:26.218 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:26.225 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM \"Product\" AS \"p\")
+    THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT)
+END"
+2017-10-03 00:12:26.279 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:26.293 +00:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@p0='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Product\" (\"Name\")
+VALUES (@p0);
+SELECT \"Id\"
+FROM \"Product\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.299 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Product\" (\"Name\")
+VALUES (@p0);
+SELECT \"Id\"
+FROM \"Product\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.300 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Product\" (\"Name\")
+VALUES (@p0);
+SELECT \"Id\"
+FROM \"Product\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.300 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Product\" (\"Name\")
+VALUES (@p0);
+SELECT \"Id\"
+FROM \"Product\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.301 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Product\" (\"Name\")
+VALUES (@p0);
+SELECT \"Id\"
+FROM \"Product\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.302 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Product\" (\"Name\")
+VALUES (@p0);
+SELECT \"Id\"
+FROM \"Product\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.348 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:26.353 +00:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@p0='?', @p1='?', @p2='?', @p3='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Order\" (\"Completed\", \"DateCreated\", \"Description\", \"ProductId\")
+VALUES (@p0, @p1, @p2, @p3);
+SELECT \"Id\"
+FROM \"Order\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.358 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?', @p1='?', @p2='?', @p3='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"Order\" (\"Completed\", \"DateCreated\", \"Description\", \"ProductId\")
+VALUES (@p0, @p1, @p2, @p3);
+SELECT \"Id\"
+FROM \"Order\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.401 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:26.406 +00:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@p0='?', @p1='?', @p2='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"OrderLineItem\" (\"OrderId\", \"ProductId\", \"Quantity\")
+VALUES (@p0, @p1, @p2);
+SELECT \"Id\"
+FROM \"OrderLineItem\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.409 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?', @p1='?', @p2='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"OrderLineItem\" (\"OrderId\", \"ProductId\", \"Quantity\")
+VALUES (@p0, @p1, @p2);
+SELECT \"Id\"
+FROM \"OrderLineItem\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.410 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?', @p1='?', @p2='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"OrderLineItem\" (\"OrderId\", \"ProductId\", \"Quantity\")
+VALUES (@p0, @p1, @p2);
+SELECT \"Id\"
+FROM \"OrderLineItem\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.411 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?', @p1='?', @p2='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"OrderLineItem\" (\"OrderId\", \"ProductId\", \"Quantity\")
+VALUES (@p0, @p1, @p2);
+SELECT \"Id\"
+FROM \"OrderLineItem\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:26.411 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@p0='?', @p1='?', @p2='?'"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"OrderLineItem\" (\"OrderId\", \"ProductId\", \"Quantity\")
+VALUES (@p0, @p1, @p2);
+SELECT \"Id\"
+FROM \"OrderLineItem\"
+WHERE changes() = 1 AND \"Id\" = last_insert_rowid();"
+2017-10-03 00:12:27.231 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger  
+2017-10-03 00:12:27.249 +00:00 [Information] Request 1 executing.
+2017-10-03 00:12:27.422 +00:00 [Information] Request finished in 193.1816ms 301 
+2017-10-03 00:12:27.433 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/  
+2017-10-03 00:12:27.434 +00:00 [Information] Request 2 executing.
+2017-10-03 00:12:27.446 +00:00 [Information] Sending file. Request path: '"/index.html"'. Physical path: '"N/A"'
+2017-10-03 00:12:27.462 +00:00 [Information] Request finished in 29.67ms 200 text/html
+2017-10-03 00:12:28.941 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger  
+2017-10-03 00:12:28.953 +00:00 [Information] Request 3 executing.
+2017-10-03 00:12:28.954 +00:00 [Information] Request finished in 12.3233ms 301 
+2017-10-03 00:12:28.961 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/  
+2017-10-03 00:12:28.962 +00:00 [Information] Request 4 executing.
+2017-10-03 00:12:28.962 +00:00 [Information] Sending file. Request path: '"/index.html"'. Physical path: '"N/A"'
+2017-10-03 00:12:28.963 +00:00 [Information] Request finished in 1.9333ms 200 text/html
+2017-10-03 00:12:28.974 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/css/typography.css  
+2017-10-03 00:12:28.978 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/css/reset.css  
+2017-10-03 00:12:28.987 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/css/screen.css  
+2017-10-03 00:12:28.991 +00:00 [Information] Request 5 executing.
+2017-10-03 00:12:28.992 +00:00 [Information] Sending file. Request path: '"/css/reset.css"'. Physical path: '"N/A"'
+2017-10-03 00:12:28.992 +00:00 [Information] Request finished in 13.8697ms 200 text/css
+2017-10-03 00:12:28.992 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/object-assign-pollyfill.js  
+2017-10-03 00:12:28.995 +00:00 [Information] Request 8 executing.
+2017-10-03 00:12:28.995 +00:00 [Information] Sending file. Request path: '"/lib/object-assign-pollyfill.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:28.996 +00:00 [Information] Request finished in 3.5812ms 200 application/javascript
+2017-10-03 00:12:28.996 +00:00 [Information] Request 7 executing.
+2017-10-03 00:12:28.997 +00:00 [Information] Sending file. Request path: '"/css/screen.css"'. Physical path: '"N/A"'
+2017-10-03 00:12:28.998 +00:00 [Information] Request finished in 10.623ms 200 text/css
+2017-10-03 00:12:28.998 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/jquery-1.8.0.min.js  
+2017-10-03 00:12:28.999 +00:00 [Information] Request 9 executing.
+2017-10-03 00:12:29.000 +00:00 [Information] Sending file. Request path: '"/lib/jquery-1.8.0.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.001 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/jquery.slideto.min.js  
+2017-10-03 00:12:29.002 +00:00 [Information] Request 6 executing.
+2017-10-03 00:12:29.002 +00:00 [Information] Sending file. Request path: '"/css/typography.css"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.003 +00:00 [Information] Request finished in 28.8593ms 200 text/css
+2017-10-03 00:12:29.008 +00:00 [Information] Request 10 executing.
+2017-10-03 00:12:29.008 +00:00 [Information] Sending file. Request path: '"/lib/jquery.slideto.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.008 +00:00 [Information] Request finished in 7.9345ms 200 application/javascript
+2017-10-03 00:12:29.019 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/jquery.wiggle.min.js  
+2017-10-03 00:12:29.019 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/jquery.ba-bbq.min.js  
+2017-10-03 00:12:29.021 +00:00 [Information] Request 11 executing.
+2017-10-03 00:12:29.021 +00:00 [Information] Sending file. Request path: '"/lib/jquery.wiggle.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.021 +00:00 [Information] Request 12 executing.
+2017-10-03 00:12:29.021 +00:00 [Information] Sending file. Request path: '"/lib/jquery.ba-bbq.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.034 +00:00 [Information] Request finished in 14.2262ms 200 application/javascript
+2017-10-03 00:12:29.034 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/lodash.min.js  
+2017-10-03 00:12:29.022 +00:00 [Information] Request finished in 2.3182ms 200 application/javascript
+2017-10-03 00:12:29.034 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/swagger-ui.min.js  
+2017-10-03 00:12:29.035 +00:00 [Information] Request 13 executing.
+2017-10-03 00:12:29.035 +00:00 [Information] Sending file. Request path: '"/lib/lodash.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.036 +00:00 [Information] Request finished in 1.6398ms 200 application/javascript
+2017-10-03 00:12:29.036 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/backbone-min.js  
+2017-10-03 00:12:29.036 +00:00 [Information] Request 14 executing.
+2017-10-03 00:12:29.040 +00:00 [Information] Sending file. Request path: '"/swagger-ui.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.041 +00:00 [Information] Request 15 executing.
+2017-10-03 00:12:29.045 +00:00 [Information] Sending file. Request path: '"/lib/backbone-min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.050 +00:00 [Information] Request finished in 14.6849ms 200 application/javascript
+2017-10-03 00:12:29.051 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/handlebars-4.0.5.js  
+2017-10-03 00:12:29.051 +00:00 [Information] Request 16 executing.
+2017-10-03 00:12:29.052 +00:00 [Information] Sending file. Request path: '"/lib/handlebars-4.0.5.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.053 +00:00 [Information] Request finished in 2.0125ms 200 application/javascript
+2017-10-03 00:12:29.061 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/marked.js  
+2017-10-03 00:12:29.063 +00:00 [Information] Request 17 executing.
+2017-10-03 00:12:29.064 +00:00 [Information] Sending file. Request path: '"/lib/marked.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.064 +00:00 [Information] Request finished in 3.2127ms 200 application/javascript
+2017-10-03 00:12:29.074 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/highlight.9.1.0.pack.js  
+2017-10-03 00:12:29.075 +00:00 [Information] Request finished in 76.526ms 200 application/javascript
+2017-10-03 00:12:29.075 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/highlight.9.1.0.pack_extended.js  
+2017-10-03 00:12:29.078 +00:00 [Information] Request 18 executing.
+2017-10-03 00:12:29.080 +00:00 [Information] Sending file. Request path: '"/lib/highlight.9.1.0.pack.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.080 +00:00 [Information] Request 19 executing.
+2017-10-03 00:12:29.081 +00:00 [Information] Sending file. Request path: '"/lib/highlight.9.1.0.pack_extended.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.081 +00:00 [Information] Request finished in 6.2453ms 200 application/javascript
+2017-10-03 00:12:29.082 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/jsoneditor.min.js  
+2017-10-03 00:12:29.082 +00:00 [Information] Request 20 executing.
+2017-10-03 00:12:29.083 +00:00 [Information] Sending file. Request path: '"/lib/jsoneditor.min.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.083 +00:00 [Information] Request finished in 1.2648ms 200 application/javascript
+2017-10-03 00:12:29.083 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/lib/swagger-oauth.js  
+2017-10-03 00:12:29.081 +00:00 [Information] Request finished in 6.5459ms 200 application/javascript
+2017-10-03 00:12:29.088 +00:00 [Information] Request 21 executing.
+2017-10-03 00:12:29.089 +00:00 [Information] Sending file. Request path: '"/lib/swagger-oauth.js"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.089 +00:00 [Information] Request finished in 5.7302ms 200 application/javascript
+2017-10-03 00:12:29.090 +00:00 [Information] Request finished in 55.2306ms 200 application/javascript
+2017-10-03 00:12:29.117 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/images/logo_small.png  
+2017-10-03 00:12:29.118 +00:00 [Information] Request 22 executing.
+2017-10-03 00:12:29.118 +00:00 [Information] Sending file. Request path: '"/images/logo_small.png"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.119 +00:00 [Information] Request finished in 1.529ms 200 image/png
+2017-10-03 00:12:29.123 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/css/print.css  
+2017-10-03 00:12:29.124 +00:00 [Information] Request 23 executing.
+2017-10-03 00:12:29.124 +00:00 [Information] Sending file. Request path: '"/css/print.css"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.124 +00:00 [Information] Request finished in 1.2986ms 200 text/css
+2017-10-03 00:12:29.403 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/v1/swagger.json  
+2017-10-03 00:12:29.404 +00:00 [Information] Request 24 executing.
+2017-10-03 00:12:29.419 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/images/favicon-32x32.png  
+2017-10-03 00:12:29.419 +00:00 [Information] Request 25 executing.
+2017-10-03 00:12:29.420 +00:00 [Information] Sending file. Request path: '"/images/favicon-32x32.png"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.420 +00:00 [Information] Request finished in 1.3401ms 200 image/png
+2017-10-03 00:12:29.424 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/images/favicon-16x16.png  
+2017-10-03 00:12:29.425 +00:00 [Information] Request 26 executing.
+2017-10-03 00:12:29.425 +00:00 [Information] Sending file. Request path: '"/images/favicon-16x16.png"'. Physical path: '"N/A"'
+2017-10-03 00:12:29.425 +00:00 [Information] Request finished in 1.3731ms 200 image/png
+2017-10-03 00:12:29.749 +00:00 [Information] Request finished in 341.5019ms 200 application/json
+2017-10-03 00:12:35.103 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/images/throbber.gif  
+2017-10-03 00:12:35.104 +00:00 [Information] Request 27 executing.
+2017-10-03 00:12:35.105 +00:00 [Information] Sending file. Request path: '"/images/throbber.gif"'. Physical path: '"N/A"'
+2017-10-03 00:12:35.105 +00:00 [Information] Request finished in 2.267ms 200 image/gif
+2017-10-03 00:12:39.815 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/api/Products  
+2017-10-03 00:12:39.815 +00:00 [Information] Request 28 executing.
+2017-10-03 00:12:39.849 +00:00 [Information] Executing action method "AspNetCoreWorkshop.Controllers.ProductsController.Get (AspNetCoreWorkshop)" with arguments (null) - ModelState is Valid
+2017-10-03 00:12:39.853 +00:00 [Information] Entity Framework Core "2.0.0-rtm-26452" initialized '"StoreContext"' using provider '"Microsoft.EntityFrameworkCore.Sqlite"' with options: "None"
+2017-10-03 00:12:39.901 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:12:39.907 +00:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"p\".\"Id\", \"p\".\"Name\"
+FROM \"Product\" AS \"p\""
+2017-10-03 00:12:39.919 +00:00 [Information] Executing ObjectResult, writing value "Microsoft.AspNetCore.Mvc.ControllerContext".
+2017-10-03 00:12:39.935 +00:00 [Information] Executed action "AspNetCoreWorkshop.Controllers.ProductsController.Get (AspNetCoreWorkshop)" in 90.1227ms
+2017-10-03 00:12:39.936 +00:00 [Information] Request finished in 121.249ms 200 application/json; charset=utf-8
+2017-10-03 00:14:46.136 +00:00 [Warning] Storing keys in a directory '"/root/.aspnet/DataProtection-Keys"' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+2017-10-03 00:14:46.167 +00:00 [Information] User profile is available. Using '"/root/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2017-10-03 00:14:46.700 +00:00 [Information] Application startup complete!
+2017-10-03 00:14:57.958 +00:00 [Information] Entity Framework Core "2.0.0-rtm-26452" initialized '"StoreContext"' using provider '"Microsoft.EntityFrameworkCore.Sqlite"' with options: "None"
+2017-10-03 00:14:58.057 +00:00 [Information] Executed DbCommand ("9"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:14:58.064 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:14:58.066 +00:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT COUNT(*) FROM \"sqlite_master\" WHERE \"type\" = 'table' AND \"rootpage\" IS NOT NULL;"
+2017-10-03 00:14:58.147 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""PRAGMA foreign_keys=ON;"
+2017-10-03 00:14:58.154 +00:00 [Information] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM \"Product\" AS \"p\")
+    THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT)
+END"
+2017-10-03 00:14:59.227 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger  
+2017-10-03 00:14:59.269 +00:00 [Information] Request 1 executing.
+2017-10-03 00:14:59.495 +00:00 [Information] Request finished in 270.4238ms 301 
+2017-10-03 00:14:59.506 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/  
+2017-10-03 00:14:59.507 +00:00 [Information] Request 2 executing.
+2017-10-03 00:14:59.512 +00:00 [Information] Sending file. Request path: '"/index.html"'. Physical path: '"N/A"'
+2017-10-03 00:14:59.519 +00:00 [Information] Request finished in 12.2815ms 200 text/html
+2017-10-03 00:15:00.932 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/  
+2017-10-03 00:15:00.943 +00:00 [Information] Request 3 executing.
+2017-10-03 00:15:00.945 +00:00 [Information] Sending file. Request path: '"/index.html"'. Physical path: '"N/A"'
+2017-10-03 00:15:00.951 +00:00 [Information] Request finished in 19.4789ms 200 text/html
+2017-10-03 00:15:01.254 +00:00 [Information] Request starting HTTP/1.1 GET http://localhost:32769/swagger/v1/swagger.json  
+2017-10-03 00:15:01.257 +00:00 [Information] Request 4 executing.
+2017-10-03 00:15:01.675 +00:00 [Information] Request finished in 420.2554ms 200 application/json
