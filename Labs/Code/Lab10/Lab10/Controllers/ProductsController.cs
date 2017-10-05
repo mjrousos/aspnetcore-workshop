@@ -40,8 +40,7 @@ namespace Lab10.Controllers
 
             var update = _dataContext.Products.Update(product);
             await _dataContext.SaveChangesAsync();
-
-            return View("Edit", product);
+            return Redirect("~/productlist");
         }
 
         [HttpGet]
