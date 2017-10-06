@@ -9,9 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreWorkshop.Controllers
 {
-    [Produces("application/json")]
-    [Route("/api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : Controller
     {
         private StoreContext _dataContext;
 
@@ -21,10 +19,39 @@ namespace AspNetCoreWorkshop.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _dataContext.Products.SingleOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(nameof(Edit), product);
+        }
+
+        [HttpPost]
+        [Route("[controller]/{id}")]
+        public async Task<IActionResult> Save([FromForm]Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(Edit), product);
+            }
+
+            var update = _dataContext.Products.Update(product);
+            await _dataContext.SaveChangesAsync();
+
+            return Redirect("~/productlist");
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]")]
         public async Task<IEnumerable<Product>> Get() => await _dataContext.Products.ToListAsync();
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("/api/[controller]/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var product = await _dataContext.Products.SingleOrDefaultAsync(x => x.Id == id);
@@ -38,6 +65,7 @@ namespace AspNetCoreWorkshop.Controllers
         }
 
         [HttpPost]
+        [Route("/api/[controller]")]
         public async Task<IActionResult> Post([FromBody]Product product)
         {
             if (!ModelState.IsValid)

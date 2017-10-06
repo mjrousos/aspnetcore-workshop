@@ -1,0 +1,28 @@
+﻿@page
+@model AspNetCoreWorkshop.Pages.ProductListModel
+@using AspNetCoreWorkshop.Models;
+@{
+    ViewData["Title"] = "ProductList";
+}
+
+<h2>ProductList</h2>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<table>
+    <thead>
+        <tr>
+            <td>@nameof(Product.Id)</td>
+            <td>@nameof(Product.Name)</td>
+        </tr>
+    </thead>
+    @foreach (var product in Model.Products)
+    {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.Name</td>
+        </tr>
+    }
+</table>
