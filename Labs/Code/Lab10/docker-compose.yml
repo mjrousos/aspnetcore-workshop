@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  aspnetcoreworkshop:
+    image: aspnetcoreworkshop
+    build:
+      context: ./AspNetCoreWorkshop
+      dockerfile: Dockerfile
