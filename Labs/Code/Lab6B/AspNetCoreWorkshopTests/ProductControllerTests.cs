@@ -3,7 +3,9 @@ using AspNetCoreWorkshop.Data;
 using AspNetCoreWorkshop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 using System.Linq;
 
 namespace WorkshopTests
@@ -14,10 +16,12 @@ namespace WorkshopTests
         [TestMethod]
         public void GetReturnsListOfProducts()
         {
+
+            var logger = Substitute.For<ILogger<ProductsController>>();
             using (var context = CreateTestStoreContext())
             {
                 // arrange
-                var productsContoller = new ProductsController(context);
+                var productsContoller = new ProductsController(context, logger);
 
                 // act
                 var result = productsContoller.Get().Result;
@@ -32,8 +36,10 @@ namespace WorkshopTests
         {
             using (var context = CreateTestStoreContext())
             {
+                var logger = Substitute.For<ILogger<ProductsController>>();
+
                 // arrange
-                var productsContoller = new ProductsController(context);
+                var productsContoller = new ProductsController(context, logger);
 
                 // act
                 var result = productsContoller.Get(100).Result;

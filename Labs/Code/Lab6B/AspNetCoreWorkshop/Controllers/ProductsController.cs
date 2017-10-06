@@ -7,6 +7,7 @@ using AspNetCoreWorkshop.Models;
 using AspNetCoreWorkshop.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetCoreWorkshop.Controllers
 {
@@ -14,10 +15,12 @@ namespace AspNetCoreWorkshop.Controllers
     [Route("/api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private StoreContext _dataContext;
+        private readonly ILogger<ProductsController> _logger;
+        private readonly StoreContext _dataContext;
 
-        public ProductsController(StoreContext storeContext)
+        public ProductsController(StoreContext storeContext, ILogger<ProductsController> logger)
         {
+            _logger = logger;
             _dataContext = storeContext;
         }
 
@@ -35,7 +38,7 @@ namespace AspNetCoreWorkshop.Controllers
                 return NotFound();
             }
 
-            Log.Information("GET {Id}: Found {@Product}", id, product);
+            _logger.LogInformation("GET {Id}: Found {@Product}", id, product);
 
             return Ok(product);
         }
