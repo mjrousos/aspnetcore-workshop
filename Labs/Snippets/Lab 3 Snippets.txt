@@ -1,0 +1,177 @@
+Adding Entity Framework Dependencies
+3.
+    <ItemGroup>
+        <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    </ItemGroup>
+
+
+Setup the Entity Framework Models
+1. 
+    public class Order
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public DateTime DateCreated { get; set; }
+        public bool Completed { get; set; }
+    }
+2.
+    public class OrderLineItem
+    {
+        public int Id { get; set; }
+        [Range(1, 100)] public int Quantity { get; set; }
+        public Order Order { get; set; }
+        public Product Product { get; set; }
+    }
+3.
+    public ICollection<OrderLineItem> OrderLineItems { get; set; } = new HashSet<OrderLineItem>();
+
+    [NotMapped]
+    public IEnumerable<Product> Products => OrderLineItems.Select(o => o.Product);
+4.
+    public ICollection<OrderLineItem> OrderLineItems { get; set; } = new HashSet<OrderLineItem>();
+
+    [NotMapped]
+    public IEnumerable<Order> Orders => OrderLineItems.Select(o => o.Order); 
+
+
+Setup the Entity Framework Database Context
+1.
+    public class StoreContext : DbContext
+    {
+        public StoreContext(DbContextOptions<StoreContext> options)
+            : base(options)
+        { }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderLineItem> OrderLineItems { get; set; }
+
+        // This method can be used to customize ORM beahviors
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // For example, table names for .NET classes can be customized
+            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<Product>().ToTable("Product");
+            modelBuilder.Entity<OrderLineItem>().ToTable("OrderLineItem");
+
+            // Or, relationships between entities could be explicitly defined
+            // or keys could be defined, etc.
+        }
+    }
+2.
+    services.AddDbContext<StoreContext>(contextOptions =>
+        contextOptions.UseInMemoryDatabase("sampleStoreDb"));
+
+
+Seed the Database
+2.
+    public static void Initialize(StoreContext context)
+    {
+        // Creates the database if it doesn't exist
+        context.Database.EnsureCreated();
+
+        // Checks to see if any products exist
+        if (context.Products.Any())
+        {
+            return;   // DB already has been seeded
+        }
+
+        // Initial products
+        var products = new Product[]
+        {
+            new Product{ Name = "Widget 1.0" },
+            new Product{ Name = "Super Widget" },
+            new Product{ Name = "Widget Mini" },
+            new Product{ Name = "Widget Xtreme" },
+            new Product{ Name = "Jumbo Widget" },
+            new Product{ Name = "Widget 2.0" }
+        };
+
+        context.Products.AddRange(products);
+        context.SaveChanges();
+
+        // Initial orders
+        var orders = new Order[]
+        {
+            new Order{ Description = "First order", DateCreated = DateTime.Now.AddDays(-10), Completed = true },
+            new Order{ Description = "Second order", DateCreated = DateTime.Now }
+        };
+
+        context.Orders.AddRange(orders);
+        context.SaveChanges();
+
+        // Initial OrderLinesItems
+        var orderItems = new OrderLineItem[]
+        {
+            new OrderLineItem{ Order = orders[0], Product = products[0], Quantity = 1 },
+            new OrderLineItem{ Order = orders[0], Product = products[3], Quantity = 2 },
+
+            new OrderLineItem{ Order = orders[0], Product = products[1], Quantity = 2 },
+            new OrderLineItem{ Order = orders[1], Product = products[3], Quantity = 1 },
+            new OrderLineItem{ Order = orders[1], Product = products[5], Quantity = 1 }
+        };
+
+        context.OrderLineItems.AddRange(orderItems);
+        context.SaveChanges();
+    }
+3.
+    var host = BuildWebHost(args);
+
+    using (var scope = host.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<StoreContext>();
+        DbInitializer.Initialize(context);
+    }
+
+    host.Run();
+
+
+Update the App to use the DbContext
+1.
+    private StoreContext _dataContext;
+
+    public ProductsController(StoreContext context)
+    {
+        _dataContext = context;
+    }
+3.
+    [HttpGet]
+    public async Task<IEnumerable<Product>> Get() => 
+        await _dataContext.Products.ToListAsync();
+4.
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        var product = await _dataContext.Products.SingleOrDefaultAsync(p => p.Id == id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(product);
+    }
+5.
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] Product product)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        _dataContext.Products.Add(product);
+        await _dataContext.SaveChangesAsync();
+        return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
+    }
+
+
+Database Providers
+1.
+    services.AddDbContext<StoreContext>(contextOptions =>
+        contextOptions.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+2.
+    {
+        "ConnectionStrings": {
+            "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=OrdersSample;Trusted_Connection=True;MultipleActiveResultSets=true"
+        }
+    }

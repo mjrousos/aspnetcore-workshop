@@ -1,0 +1,124 @@
+Running the application on Kestrel directly
+2.
+    .UseUrls("http://0.0.0.0:8081")
+
+
+Understanding Program.cs
+3.
+    public static IWebHost BuildWebHost(string[] args) =>
+        new WebHostBuilder()
+            .Build(); 
+4.
+    .UseKestrel()
+5.
+    .UseContentRoot(Directory.GetCurrentDirectory())
+6.
+    .ConfigureAppConfiguration(SetupAppConfiguration)
+7.
+    private static void SetupAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configBuilder)
+    {
+        var env = context.HostingEnvironment;
+
+        configBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        configBuilder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+        if (env.IsDevelopment())
+        {
+            configBuilder.AddUserSecrets<Program>(true);
+        }
+
+        configBuilder.AddEnvironmentVariables();
+    }
+8.
+    .ConfigureLogging(SetupAppLogging)
+
+    private static void SetupAppLogging(WebHostBuilderContext context, ILoggingBuilder loggingBuilder)
+    {
+        loggingBuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
+        loggingBuilder.AddConsole();
+        loggingBuilder.AddDebug();
+    }    
+9.
+    .UseUrls("http://0.0.0.0:8081")
+    .UseIISIntegration()
+    .UseStartup<Startup>()
+
+
+Startup.cs
+1.
+    app.UseStaticFiles();
+2.
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Hello from ASP.NET Core!</h1>
+    </body>
+    </html>
+
+
+Changing environments
+2.
+    "Logging": {
+        "IncludeScopes": false,
+        "LogLevel": {
+        "Default": "Warning"
+        }
+    }
+
+
+Getting Configuration Values
+4.
+    "StoreSettings": {
+        "StoreName": "My Store",
+        "StoreID": 1234,
+        "Settings": {
+            "Setting1": {
+                "Value": "Hello!",
+                "Enabled": true
+            },
+            "Setting2": {
+                "Value": "Goodbye!",
+                "Enabled": false
+            }
+        }
+    }
+5.
+    public class StoreSettingsOptions
+    {
+        public string StoreName { get; set; }
+        public int StoreID { get; set; }
+        public Dictionary<string, StoreSetting> Settings { get; set; }
+    }
+
+    public class StoreSetting
+    {
+        public string Value { get; set; }
+        public bool Enabled { get; set; }
+    }
+6.
+    services.Configure<StoreSettingsOptions>(Configuration.GetSection("StoreSettings"));
+7.
+    [Route("/api/[controller]")]
+8.
+    private StoreSettingsOptions _settings;
+
+    public SettingsController(IOptions<StoreSettingsOptions> settingsOptions)
+    {
+        _settings = settingsOptions?.Value;
+    } 
+9.
+    [HttpGet]
+    public IActionResult Index()
+    {
+        return Ok(new
+        {
+            Name = _settings.StoreName,
+            ID = _settings.StoreID,
+            Settings = _settings.Settings
+                        .Where(s => s.Value.Enabled)
+        });
+    }

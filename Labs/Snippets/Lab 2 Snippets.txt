@@ -1,0 +1,99 @@
+Setting up the Web API Project
+2.
+    services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" }));
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
+
+
+Create a new Products Web API
+1.
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+3 & 4.
+    [Route("/api/[controller]")]
+    public class ProductsController
+    {
+        [HttpGet]
+        public string Get() => "Hello World";
+    }
+
+
+Returning JSON from the controller
+1.
+    private static List<Product> _products = new List<Product>(new[] {
+        new Product() { Id = 1, Name = "Computer" },
+        new Product() { Id = 2, Name = "Radio" },
+        new Product() { Id = 3, Name = "Apple" },
+    });
+2.
+    [HttpGet]
+    public IEnumerable<Product> Get()
+    {
+        return _products;
+    }
+
+
+Add a method to Get a single product
+1 & 2.
+    [HttpGet("{id}")]
+    public Product Get(int id)
+    {
+        return _products.SingleOrDefault(p => p.Id == id);
+    }
+6.
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
+    {
+        var product = _products.SingleOrDefault(p => p.Id == id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(product);
+    }
+
+
+Adding to the list of Products
+1-3.
+    [HttpPost]
+    public void Post([FromBody]Product product)
+    {
+        _products.Add(product);
+    }
+6.
+    [HttpPost]
+    public IActionResult Post([FromBody]Product product)
+    {
+        _products.Add(product);
+        return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
+    }
+
+
+Add model validation
+2.
+    if (!ModelState.IsValid)
+    {
+        return BadRequest();
+    }
+4.
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+
+Adding XML support
+1.
+    services.AddMvc()
+        .AddXmlDataContractSerializerFormatters();
+
+
+Restrict the ProductsController to be JSON only
+1.
+    [Produces("application/json")]
