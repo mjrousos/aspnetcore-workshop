@@ -1,0 +1,116 @@
+Creating a service to assign request IDs
+3.
+    public interface IRequestIdFactory
+    {
+        string MakeRequestId();
+    }
+4.
+    public class RequestCounter : IRequestIdFactory
+    {
+        private int _requestId;
+
+        public string MakeRequestId() => Interlocked.Increment(ref _requestId).ToString();
+    }
+
+
+Register the request ID service in DI container
+2.
+    services.AddSingleton<IRequestIdFactory, RequestCounter>();
+
+
+Add middleware that logs request IDs
+4.
+    public class RequestIdMiddleware
+    {
+        private readonly RequestDelegate _next;
+        private readonly ILogger<RequestIdMiddleware> _logger;
+
+        public RequestIdMiddleware(RequestDelegate next, ILogger<RequestIdMiddleware> logger)
+        {
+            _next = next;
+            _logger = logger;
+        }
+
+        public Task Invoke(HttpContext context, IRequestIdFactory requestIdFactory)
+        {
+            _logger.LogInformation($"Request {requestIdFactory.MakeRequestId()} executing.");
+
+            return _next(context);
+        }
+    }
+5.
+    app.UseMiddleware<RequestIdMiddleware>();
+
+
+Adding basic tests
+4.
+    [TestClass]
+    public class RequestCounterTests
+    {
+        [TestMethod]
+        public void RequestIdIsIncreasingInt()
+        {
+            var factory = new RequestCounter();
+
+            var first = int.Parse(factory.MakeRequestId());
+            var second = int.Parse(factory.MakeRequestId());
+
+            Assert.IsTrue(second == first + 1);
+        }
+    }
+
+
+Testing ProductsController
+3.
+    private StoreContext CreateTestStoreContext()
+    {
+        var options = new DbContextOptionsBuilder<StoreContext>()
+            .UseInMemoryDatabase(databaseName: "TestProductsControllerDatabase")
+            .Options;
+
+        var context = new StoreContext(options);
+
+    var products = new Product[]
+    {
+        new Product{ Name = "Widget 1.0" },
+        new Product{ Name = "Super Widget" },
+        new Product{ Name = "Widget Mini" },
+    };
+
+        context.Products.AddRange(products);
+        context.SaveChanges();
+
+        return context;
+    }
+4.
+    [TestMethod]
+    public void GetReturnsListOfProducts()
+    {
+        using (var context = CreateTestStoreContext())
+        {
+            // arrange
+            var productsContoller = new ProductsController(context);
+
+            // act
+            var result = productsContoller.Get().Result;
+
+            // assert
+            CollectionAssert.AreEqual(result.ToList(), context.Products.ToList());
+        }
+    }
+5.
+    [TestMethod]
+    public void GetByIdWithInvalidIdReturnsNotFoundResult()
+    {
+        using (var context = CreateTestStoreContext())
+        {
+            // arrange
+            var productsContoller = new ProductsController(context);
+
+            // act
+            var result = productsContoller.Get(100).Result;
+
+            // assert
+            Assert.AreEqual(typeof(NotFoundResult), result.GetType());
+        }
+    }

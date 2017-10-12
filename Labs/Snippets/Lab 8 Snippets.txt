@@ -1,0 +1,39 @@
+Use Resources in Data Annotations
+1.
+    [Required(ErrorMessage = "NameRequired")]
+3.
+    // Add localization services (StringLocalizer, HtmlLocalizer, etc. with 
+    // resources from the given path)
+    services.AddLocalization(options => options.ResourcesPath = "Resources");
+4.
+    .AddDataAnnotationsLocalization() // Localize data annotation error messages
+
+
+Use Resources in a Controller
+7.
+    private readonly StoreContext _context;
+    private readonly IStringLocalizer<OrdersController> _localizer;
+
+    public OrdersController(StoreContext context, IStringLocalizer<OrdersController> localizer)
+    {
+        _context = context;
+        _localizer = localizer;
+    }
+8.
+    _localizer["OrderNotFound", id].Value
+
+
+Using Proper Localization Middleware
+2.
+    var supportedCultures = new[]
+    {
+            new CultureInfo("en-US"),
+            new CultureInfo("fr-FR"),
+    };
+
+    app.UseRequestLocalization(new RequestLocalizationOptions
+    {
+        DefaultRequestCulture = new RequestCulture("en-US"),
+        SupportedCultures = supportedCultures,
+        SupportedUICultures = supportedCultures
+    });

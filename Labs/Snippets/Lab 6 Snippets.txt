@@ -1,0 +1,102 @@
+Setting up your application for logging
+3.
+    startupLogger.LogInformation("Application startup complete!");
+
+
+Filtering logs
+1.
+    startupLogger.LogInformation("Application startup complete!");
+
+    startupLogger.LogCritical("This is a critical message");
+    startupLogger.LogDebug("This is a debug message");
+    startupLogger.LogTrace("This is a trace message");
+    startupLogger.LogWarning("This is a warning message");
+    startupLogger.LogError("This is an error message");
+3.
+    "Logging": {
+        "Console": {
+            "LogLevel": {
+                "Default": "Trace"
+            }
+        }
+    }
+5.
+    loggingBuilder.AddFilter<ConsoleLoggerProvider>((category, level) => {
+        return category == typeof(Startup).FullName;
+    });
+
+
+Adding other logging providers
+4.
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.File("logfile.txt")
+        .WriteTo.Console()
+        .CreateLogger();
+5.
+    try
+    {
+        var host = BuildWebHost(args);
+
+        using (var scope = host.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetService<StoreContext>();
+            if (context != null)
+            {
+                DbInitializer.Initialize(context);
+            }
+        }
+
+        host.Run();
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Host terminated unexpectedly");
+    }
+    finally
+    {
+        Log.CloseAndFlush();
+    }
+6.
+    .UseSerilog()
+
+
+Serilog: Structured Logging
+1.
+    Log.Information("GET {Id}: Found {@Product}", id, product);
+
+
+Write some buggy code
+1.
+    app.Run(context => throw new InvalidOperationException("Oops!"));
+
+
+Adding a handler for non-development environments
+1.
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseExceptionHandler(subApp =>
+        {
+            subApp.Run(async context =>
+            {
+                context.Response.ContentType = "text/html";
+                await context.Response.WriteAsync("<strong> Application error. Please contact support. </strong>");
+                await context.Response.WriteAsync(new string(' ', 512));  // Padding for IE
+            });
+        });
+    }
+
+
+Showing custom pages for non 500 status codes
+1.
+    app.Run(context =>
+    {
+        context.Response.StatusCode = 404;
+        return Task.CompletedTask;
+    });
+2.
+    app.UseStatusCodePages("text/html", "<p>You got a <strong>{0}</strong></p>");

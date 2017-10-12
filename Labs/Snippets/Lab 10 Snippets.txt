@@ -1,0 +1,113 @@
+Creating Razor Pages
+5.
+    private readonly StoreContext _storeContext;
+
+    public ProductListModel(StoreContext storeContext)
+    {
+        _storeContext = storeContext;
+    }
+6.
+    public IEnumerable<Product> Products { get; set; }
+7.
+    public async Task OnGetAsync()
+    {
+        Products = await _ordersContext.Products.ToListAsync();
+    }
+9.
+    @page
+    @model AspNetCoreWorkshop.Pages.ProductListModel
+    @using AspNetCoreWorkshop.Models;
+    @{
+        ViewData["Title"] = "ProductList";
+    }
+10.
+    <table>
+        <thead>
+            <tr>
+                <td>@nameof(Product.Id)</td>
+                <td>@nameof(Product.Name)</td>
+            </tr>
+        </thead>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+            </tr>
+        }
+    </table>
+
+
+Examining Tag Helpers
+2.
+    namespace Lab10.Controllers
+    {
+        public class ProductsController: Controller
+        {
+            [HttpGet]
+            [Route("/api/[controller]/")]
+            public async Task<IEnumerable<Product>> Get()
+            { }
+
+            [HttpGet]
+            [Route("/api/[controller]/{id}")]
+            public async Task<IActionResult> Get(int id)
+            { }
+
+            [HttpPost]
+            [Route("/api/[controller]")]
+            public async Task<IActionResult> Post([FromBody] Product product)
+            { }
+        }
+    }
+3.
+    [HttpGet]
+    [Route("[controller]/{id}")]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var product = await _dataContext.Products.SingleOrDefaultAsync(p => p.Id == id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        return View(nameof(Edit), product);
+    }
+4.
+    [HttpPost]
+    [Route("[controller]/{id}")]
+    public async Task<IActionResult> Save([FromForm]Product product)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(nameof(Edit), product);
+        }
+
+        var update = _dataContext.Products.Update(product);
+        await _dataContext.SaveChangesAsync();
+
+        return Redirect("~/productlist");
+    }
+6.
+    @using Lab10
+    @using Lab10.Models
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @addTagHelper *, Lab10
+9.
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-controller="Products" asp-action="Save" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
