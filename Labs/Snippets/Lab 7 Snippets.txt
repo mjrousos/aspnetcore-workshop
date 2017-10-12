@@ -1,0 +1,137 @@
+Write middleware that sets the current culture based on a query string value
+3.
+    app.Use((context, next) =>
+    {
+        var cultureQuery = context.Request.Query["culture"];
+        if (!string.IsNullOrWhiteSpace(cultureQuery))
+        {
+            var culture = new CultureInfo(cultureQuery);
+
+            CultureInfo.CurrentCulture = culture;
+            CultureInfo.CurrentUICulture = culture;
+        }
+        
+        // Call the next delegate/middleware in the pipeline
+        return next();
+    });
+
+
+Move the middleware to its own type
+5.
+    public class RequestCultureMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public RequestCultureMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public Task Invoke(HttpContext context)
+        {
+            var cultureQuery = context.Request.Query["culture"];
+            if (!string.IsNullOrWhiteSpace(cultureQuery))
+            {
+                var culture = new CultureInfo(cultureQuery);
+
+                CultureInfo.CurrentCulture = culture;
+                CultureInfo.CurrentUICulture = culture;
+            }
+
+            return _next(context);
+        }
+    }
+6.
+    app.UseMiddleware<RequestCultureMiddleware>();
+7.
+    public static class RequestCultureMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseRequestCulture(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<RequestCultureMiddleware>();
+        }
+    }
+9.
+    app.UseRequestCulture();
+
+
+Adding options to middleware
+1.
+    public class RequestCultureOptions
+    {
+        public CultureInfo DefaultCulture { get; set; }
+    }
+2.
+    public static IApplicationBuilder UseRequestCulture(this IApplicationBuilder builder)
+    {
+        return builder.UseRequestCulture(new RequestCultureOptions());
+    }
+
+    public static IApplicationBuilder UseRequestCulture(this IApplicationBuilder builder, RequestCultureOptions options)
+    {
+        return builder.UseMiddleware<RequestCultureMiddleware>(options);
+    }
+3.
+    private readonly RequestDelegate _next;
+    private readonly RequestCultureOptions _options;
+
+    public RequestCultureMiddleware(RequestDelegate next, RequestCultureOptions options)
+    {
+        _next = next;
+        _options = options;
+    }
+4.
+    public Task Invoke(HttpContext httpContext)
+    {
+        var requestCulture = _options?.DefaultCulture;
+
+        var cultureQuery = httpContext.Request.Query["culture"];
+        if (!string.IsNullOrWhiteSpace(cultureQuery))
+        {
+            requestCulture = new CultureInfo(cultureQuery);
+        }
+
+        if (requestCulture != null)
+        {
+            CultureInfo.CurrentCulture = requestCulture;
+            CultureInfo.CurrentUICulture = requestCulture;
+        }
+
+        return _next(httpContext);
+    }
+5.
+    app.UseRequestCulture(new RequestCultureOptions
+    {
+        DefaultCulture = new CultureInfo(Configuration["DefaultCulture"] ?? "en-GB")
+    });
+6.
+    "DefaultCulture": "en-AU"
+
+
+Flowing options from dependency injection system to middleware
+1.
+    public RequestCultureMiddleware(RequestDelegate next, IOptions<RequestCultureOptions> options)
+    {
+        _next = next;
+        _options = options.Value;
+    }
+2.
+    public static class RequestCultureMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseRequestCulture(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<RequestCultureMiddleware>();
+        }
+
+        public static IApplicationBuilder UseRequestCulture(this IApplicationBuilder builder, RequestCultureOptions options)
+        {
+            return builder.UseMiddleware<RequestCultureMiddleware>(Options.Create(options));
+        }
+    }
+3.
+    app.UseRequestCulture();
+4.
+    services.Configure<RequestCultureOptions>(options =>
+    {
+        options.DefaultCulture = new CultureInfo(Configuration["DefaultCulture"] ?? "en-GB");
+    });
